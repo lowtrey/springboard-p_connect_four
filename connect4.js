@@ -16,7 +16,6 @@ let board = []; // array of rows, each row is array of cells  (board[y][x])
  */
 
 const makeBoard = () => {
-  // TODO: set "board" to empty HEIGHT x WIDTH matrix array
   board = Array(HEIGHT)
     .fill()
     .map(() => Array(WIDTH).fill(null));
@@ -25,7 +24,7 @@ const makeBoard = () => {
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
 const makeHtmlBoard = () => {
-  // TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
+  // get "htmlBoard" variable from the item in HTML w/ID of "board"
   const htmlBoard = document.querySelector("#board");
 
   // create clickable header row / cells and add id's
@@ -55,7 +54,6 @@ const makeHtmlBoard = () => {
 /** findSpotForCol: given column x, return top empty y (null if filled) */
 
 function findSpotForCol(x) {
-  // TODO: write the real version of this, rather than always returning 0
   for (let index = HEIGHT - 1; index >= 0; index--) {
     if (board[index][x] === null) {
       return index;
@@ -67,7 +65,6 @@ function findSpotForCol(x) {
 /** placeInTable: update DOM to place piece into HTML table of board */
 
 function placeInTable(y, x) {
-  // TODO: make a div and insert into correct table cell
   const cell = document.getElementById(`${y}-${x}`);
   const newPiece = document.createElement("div");
   newPiece.classList.add("piece", `p${currPlayer}`);
@@ -77,7 +74,6 @@ function placeInTable(y, x) {
 /** endGame: announce game end */
 
 function endGame(msg) {
-  // TODO: pop up alert message
   alert(msg);
 }
 
@@ -94,9 +90,7 @@ function handleClick(evt) {
   }
 
   // place piece in board and add to HTML table
-  // TODO: add line to update in-memory board
   board[y][x] = currPlayer;
-  console.log(board);
   placeInTable(y, x);
 
   // check for win
@@ -105,13 +99,11 @@ function handleClick(evt) {
   }
 
   // check for tie
-  // TODO: check if all cells in board are filled; if so call, call endGame
   if (board.every(row => row.every(cell => cell !== null))) {
     endGame("TIE GAME!");
   }
 
   // switch players
-  // TODO: switch currPlayer 1 <-> 2
   currPlayer = currPlayer === 2 ? 1 : 2;
 }
 
@@ -135,26 +127,33 @@ function checkForWin() {
 
   // TODO: read and understand this code. Add comments to help you.
 
+  // loop through each row in table
   for (let y = 0; y < HEIGHT; y++) {
+    // loop through each cell in row
     for (let x = 0; x < WIDTH; x++) {
+      // Starting with current cell:
+      // create array of four consecutive horizontal coordinates
       const horiz = [
         [y, x],
         [y, x + 1],
         [y, x + 2],
         [y, x + 3]
       ];
+      // create array of four consecutive vertical coordinates
       const vert = [
         [y, x],
         [y + 1, x],
         [y + 2, x],
         [y + 3, x]
       ];
+      // create array of four consecutive diagonal right coordinates
       const diagDR = [
         [y, x],
         [y + 1, x + 1],
         [y + 2, x + 2],
         [y + 3, x + 3]
       ];
+      // create array of four consecutive diagonal left coordinates
       const diagDL = [
         [y, x],
         [y + 1, x - 1],
@@ -162,6 +161,8 @@ function checkForWin() {
         [y + 3, x - 3]
       ];
 
+      // check to see if any of the created arrays are winners
+      // using _win function
       if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
         return true;
       }
